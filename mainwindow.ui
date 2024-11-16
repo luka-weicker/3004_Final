@@ -36,69 +36,13 @@
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>20</y>
+      <x>10</x>
+      <y>210</y>
       <width>176</width>
-      <height>181</height>
+      <height>58</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="profileLayout">
-     <item>
-      <widget class="QLabel" name="userSelect">
-       <property name="text">
-        <string>Profile Select</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="profileSelect">
-       <item>
-        <property name="text">
-         <string>Profile 1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Profile 2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Profile 3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Profile 4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Profile 5</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="updateProfileButton">
-       <property name="text">
-        <string>Update Current Profile</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
+    <layout class="QVBoxLayout" name="newProfileLayout">
      <item>
       <widget class="QLineEdit" name="newProfileInput"/>
      </item>
@@ -110,19 +54,6 @@
       </widget>
      </item>
     </layout>
-   </widget>
-   <widget class="QPushButton" name="showProfiles">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>400</y>
-      <width>121</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show Profiles</string>
-    </property>
    </widget>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
@@ -188,6 +119,35 @@
       <widget class="QPushButton" name="printAveragesButton">
        <property name="text">
         <string>Print Lifetime Averages</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>263</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="profileSelectLayout">
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="showProfiles">
+       <property name="text">
+        <string>Show All Profiles</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="profileSelect"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="profileLabel">
+       <property name="text">
+        <string>Current Profile:</string>
        </property>
       </widget>
      </item>

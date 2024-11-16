@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->showProfiles, &QPushButton::clicked, this, &MainWindow::printProfiles);
     connect(ui->printLastButton, &QPushButton::clicked, this, &MainWindow::printLastResults);
     connect(ui->printOrganButton, &QPushButton::clicked, this, &MainWindow::printOrganResults);
-    connect(ui->updateProfileButton, &QPushButton::clicked, this, &MainWindow::updateCurrentProfile);
+    connect(ui->profileSelect, &QComboBox::currentTextChanged, this, &MainWindow::updateCurrentProfile);
     connect(ui->printAveragesButton, &QPushButton::clicked, this, &MainWindow::printAverageResults);
 
     qDebug() << "Connected";
@@ -38,10 +38,23 @@ void MainWindow::generateResults() {
 }
 
 void MainWindow::newProfile() {
+    // Add new profile
     QLineEdit* inputTextBox = ui->newProfileInput;
     QString newUserName = inputTextBox->text();
-
     system.newProfile(newUserName);
+
+
+    // Add to combo box
+    QComboBox *comboBox = ui->profileSelect;
+    comboBox->addItem(newUserName);
+    comboBox->setCurrentIndex(system.getTotalProfiles()-1);
+
+    //  Update current selected profile
+    updateCurrentProfile();
+
+    // Clear name box
+    QLineEdit *lineEdit = ui->newProfileInput;
+    lineEdit->setText("");
 }
 
 void MainWindow::updateCurrentProfile(){
@@ -56,6 +69,7 @@ void MainWindow::updateCurrentProfile(){
     }
     if ((newSlot>=0) && (newSlot<MAX_PROFILES)) {
         system.setSelectedProfileSlot(newSlot);
+
     }
 }
 
