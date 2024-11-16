@@ -20,6 +20,10 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
+        // Functionality
+        bool checkValidProfile();          // Check to see if inputted slot has a valid user
+
+
     private slots:
         // Functionality
         void generateResults();         // Add a new random set of data for selected profile

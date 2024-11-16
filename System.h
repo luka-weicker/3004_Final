@@ -26,6 +26,7 @@ class System
         // Getters & setters
         inline int getSelectedProfileSlot() {return selectedProfileSlot;}
         inline QString getCurrentProfileName() {return profiles[selectedProfileSlot]->getName();}
+        inline int getTotalProfiles() {return totalProfiles;}
 
         inline void setSelectedProfileSlot(int _newSlot) {selectedProfileSlot = _newSlot;}
 

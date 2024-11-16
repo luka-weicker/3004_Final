@@ -4,7 +4,6 @@ System::System()
 {
     totalProfiles = 0;
     selectedProfileSlot=0;
-    profiles.append(new Profile("Bob"));
 }
 
 System::~System(){
@@ -16,8 +15,21 @@ void System::generateResults(int _profileSlot){
 }
 
 void System::newProfile(QString _name){
-    if (totalProfiles >= 5){return;}
+    if (totalProfiles >= MAX_PROFILES){
+        qDebug().noquote().nospace() << "You already have "<<MAX_PROFILES<<" profiles, that is the max";
+        return;
+    }
     else{
+
+        // Check if the name is already used
+        for (int i=0; i<profiles.length(); i++){
+            if (_name == profiles[i]->getName()){
+                qDebug()<<"This name is already in use, please use another name";
+                return;
+            }
+        }
+
+
         profiles.append(new Profile(_name));
         totalProfiles++;
         qDebug() << "Created a new user with name "<<_name;
@@ -35,7 +47,6 @@ void System::printLastResults(int _profileSlot){
 
 
 void System::printProfiles(){
-    qDebug() << "Here are all of the profiles:  ";
     for (int i=0; i<profiles.length();  i++){
         profiles.at(i)->printProfile(i);
     }

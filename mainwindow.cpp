@@ -27,6 +27,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::generateResults() {
+    if (this->checkValidProfile()) {return;}
+
     QPushButton *button = qobject_cast<QPushButton*>(sender());
         if (button) {
             QString buttonText = button->text();
@@ -45,10 +47,21 @@ void MainWindow::newProfile() {
 void MainWindow::updateCurrentProfile(){
     QComboBox* profileSelecctBox = ui->profileSelect;
     int newSlot = profileSelecctBox->currentIndex();
-    if ((newSlot>=0) && (newSlot<5)) {system.setSelectedProfileSlot(newSlot);}
+
+    // Check if selected user is out of range
+    if (newSlot>=system.getTotalProfiles()){
+        qDebug() << "Selected user is not initialized yet, please create a new user for this slot";
+        qDebug() << "Current user did not change";
+        return;
+    }
+    if ((newSlot>=0) && (newSlot<MAX_PROFILES)) {
+        system.setSelectedProfileSlot(newSlot);
+    }
 }
 
 void MainWindow::printAllResults() {
+    if (this->checkValidProfile()) {return;}
+
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results - - ";
     QPushButton *button = qobject_cast<QPushButton*>(sender());
         if (button) {
@@ -59,11 +72,15 @@ void MainWindow::printAllResults() {
 }
 
 void MainWindow::printLastResults(){
+    if (this->checkValidProfile()) {return;}
+
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s most recent results - - ";
     system.printLastResults(system.getSelectedProfileSlot());
 }
 
 void MainWindow::printAverageResults(){
+    if (this->checkValidProfile()) {return;}
+
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s average lifetime results - - ";
     system.printAverageResults(system.getSelectedProfileSlot());
 }
@@ -76,6 +93,8 @@ void MainWindow::printProfiles() {
 }
 
 void MainWindow::printOrganResults(){
+    if (this->checkValidProfile()) {return;}
+
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results for the selected organ - - ";
     QComboBox* organSelect = ui->organSelect;
     QString organName = organSelect->currentText();
@@ -83,5 +102,12 @@ void MainWindow::printOrganResults(){
     system.printOrganResults(system.getSelectedProfileSlot(), organName);
 }
 
-
+// Will return true if position is NOT valid
+bool MainWindow::checkValidProfile(){
+    if (system.getSelectedProfileSlot()>=system.getTotalProfiles()){
+        qDebug() << "Cannot perform action. Current user is not initalized.";
+        return true;
+    }
+    return false;
+}
 
