@@ -1,4 +1,5 @@
 hello
 
-<<<<<<< HEAD
 hi x 2
+
+hello from Luka
