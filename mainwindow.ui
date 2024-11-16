@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>230</y>
+      <width>168</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="generateLayout">
+     <item>
+      <widget class="QPushButton" name="genButton">
+       <property name="text">
+        <string>Generate Results (Scan)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>176</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="profileLayout">
+     <item>
+      <widget class="QLabel" name="userSelect">
+       <property name="text">
+        <string>Profile Select</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="profileSelect">
+       <item>
+        <property name="text">
+         <string>Profile 1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Profile 2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Profile 3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Profile 4</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Profile 5</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="updateProfileButton">
+       <property name="text">
+        <string>Update Current Profile</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="newProfileInput"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="newProfileButton">
+       <property name="text">
+        <string>Create New Profile</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="showProfiles">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>400</y>
+      <width>121</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Show Profiles</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>230</y>
+      <width>209</width>
+      <height>89</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="printLayout">
+     <item row="2" column="0">
+      <widget class="QComboBox" name="organSelect">
+       <item>
+        <property name="text">
+         <string>Heart</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Lungs</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Liver</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Kidney</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Stomach</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="printOrganButton">
+       <property name="text">
+        <string>Org. Res.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="printLastButton">
+       <property name="text">
+        <string>Print Last Results</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QPushButton" name="printAllButton">
+       <property name="text">
+        <string>Print All Results</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
