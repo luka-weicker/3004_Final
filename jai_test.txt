@@ -1,3 +1,4 @@
 hello
 
+<<<<<<< HEAD
 hi x 2
