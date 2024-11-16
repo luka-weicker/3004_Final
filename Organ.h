@@ -13,10 +13,12 @@ class Organ
 
         void addData(int _dataPoint);
         int getData(int _dataSlot);
-        int getDataLast();            // i think this can be removed with a default val to getData
+        int getDataLast();
         void printAllResults();
         void printLastResult();
+
         inline QString getName(){return name;}
+        float getAverage();
 
     private:
         QString name;

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->printLastButton, &QPushButton::clicked, this, &MainWindow::printLastResults);
     connect(ui->printOrganButton, &QPushButton::clicked, this, &MainWindow::printOrganResults);
     connect(ui->updateProfileButton, &QPushButton::clicked, this, &MainWindow::updateCurrentProfile);
+    connect(ui->printAveragesButton, &QPushButton::clicked, this, &MainWindow::printAverageResults);
 
     qDebug() << "Connected";
 }
@@ -60,6 +61,11 @@ void MainWindow::printAllResults() {
 void MainWindow::printLastResults(){
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s most recent results - - ";
     system.printLastResults(system.getSelectedProfileSlot());
+}
+
+void MainWindow::printAverageResults(){
+    qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s average lifetime results - - ";
+    system.printAverageResults(system.getSelectedProfileSlot());
 }
 
 

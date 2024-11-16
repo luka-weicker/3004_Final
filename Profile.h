@@ -22,6 +22,7 @@ class Profile
         void printLastResults();
         void printProfile(int _profileSlot);
         void printOrganResults(QString _organName);
+        void printAverageResults();
 
         // Getters & setters
         inline QString getName(){return name;}

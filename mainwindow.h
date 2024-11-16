@@ -29,6 +29,7 @@ class MainWindow : public QMainWindow
         // Printing                     // (Prints here just call the print in System class)
         void printAllResults();         // Print all data for current  user
         void printLastResults();        // Print most recent data for each organ
+        void printAverageResults();
         void printOrganResults();       // Print data for current organ
         void printProfiles();           // Print all profiles
 

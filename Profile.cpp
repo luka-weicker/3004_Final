@@ -50,3 +50,11 @@ void Profile::printOrganResults(QString _organName){
         }
     }
 }
+
+void Profile::printAverageResults()   {
+    QString organName;
+    for (int i=0; i<NUM_ORGANS; i++){
+        organName = organs[i]->getName();
+        qDebug().noquote().nospace() << organName <<": \t"<<organs[i]->getAverage();
+    }
+}

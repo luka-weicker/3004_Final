@@ -27,3 +27,11 @@ void Organ::printAllResults(){
 void Organ::printLastResult(){
     qDebug().noquote().nospace() << name << ": \t" << this->getDataLast();
 }
+
+float Organ::getAverage(){
+    float runningTotal = 0.0;
+    for (int i=0; i<results.length(); i++){
+        runningTotal  += results.at(i);
+    }
+    return (runningTotal / results.length());
+}

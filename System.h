@@ -20,6 +20,7 @@ class System
         void printLastResults(int _profileSlot);
         void printProfiles();
         void printOrganResults(int _profileSlot, QString _organName);
+        void printAverageResults(int _profileSlot);
 
 
         // Getters & setters

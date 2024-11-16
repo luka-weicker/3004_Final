@@ -130,11 +130,32 @@
       <x>580</x>
       <y>230</y>
       <width>209</width>
-      <height>89</height>
+      <height>120</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="printLayout">
-     <item row="2" column="0">
+     <item row="0" column="0" colspan="2">
+      <widget class="QPushButton" name="printAllButton">
+       <property name="text">
+        <string>Print All Results</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="printOrganButton">
+       <property name="text">
+        <string>Org. Res.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="printLastButton">
+       <property name="text">
+        <string>Print Last Results</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QComboBox" name="organSelect">
        <item>
         <property name="text">
@@ -163,24 +184,10 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="printOrganButton">
+     <item row="2" column="0" colspan="2">
+      <widget class="QPushButton" name="printAveragesButton">
        <property name="text">
-        <string>Org. Res.</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2">
-      <widget class="QPushButton" name="printLastButton">
-       <property name="text">
-        <string>Print Last Results</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2">
-      <widget class="QPushButton" name="printAllButton">
-       <property name="text">
-        <string>Print All Results</string>
+        <string>Print Lifetime Averages</string>
        </property>
       </widget>
      </item>
