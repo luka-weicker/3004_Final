@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QPlainTextEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
