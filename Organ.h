@@ -9,16 +9,15 @@ class Organ
 {
     public:
         Organ(QString _name="no_organ_name");
-        ~Organ();
+        ~Organ(){}
 
         void addData(int _dataPoint);
         int getData(int _dataSlot);
-        int getDataLast();
-        void printAllResults();
-        void printLastResult();
+        int getDataLast() {return results.last();}
 
         inline QString getName(){return name;}
         float getAverage();
+        int getResultsLength(){return results.size();}
 
     private:
         QString name;

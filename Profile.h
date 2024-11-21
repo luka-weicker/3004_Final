@@ -15,7 +15,6 @@ class Profile
 
         // Fucntionality
         void generateResults();
-        void inputResult(int _organSlot, int _v); // Input data points to a
 
         // Printing
         void printAllResults();

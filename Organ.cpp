@@ -1,8 +1,8 @@
 #include "Organ.h"
 
-Organ::Organ(QString _name)
+Organ::Organ(QString name)
 {
-    name = _name;
+    this->name = name;
 }
 
 void Organ::addData(int _dataPoint){
@@ -13,20 +13,6 @@ int Organ::getData(int _dataSlot){
     return results.at(_dataSlot);
 }
 
-int Organ::getDataLast(){
-    return results.last();
-}
-
-void Organ::printAllResults(){
-    qDebug().noquote().nospace() << name << ": ";
-    for (int i=0; i<results.length(); i++){
-        qDebug() << " " << results.at(i);
-    }
-}
-
-void Organ::printLastResult(){
-    qDebug().noquote().nospace() << name << ": \t" << this->getDataLast();
-}
 
 float Organ::getAverage(){
     float runningTotal = 0.0;
