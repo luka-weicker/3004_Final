@@ -8,6 +8,10 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPlainTextEdit>
+#include <QProgressBar>
+#include <QCheckBox>
+#include <QTimer>
+#include <QPalette>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,8 +25,11 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
-        // Functionality
-        bool checkValidProfile();          // Check to see if inputted slot has a valid user
+        // Checks   (These will return true if there IS a problem)
+        bool checkValidProfile();   // Check if selected profile is valid
+        bool checkScanned();        // Check if user has at least one scan
+        bool checkLowBattery();     // Check if device is in low battery mode
+        bool checkDeadBattery();    // Check if device is dead
 
 
     private slots:
@@ -30,6 +37,8 @@ class MainWindow : public QMainWindow
         void generateResults();         // Add a new random set of data for selected profile
         void newProfile();              // Make a new  profile
         void updateCurrentProfile();    // Select a new currently selected user
+        void updateBattery();           // Update value of battery
+        void updateBatteryColor();      // Update color of battery
 
         // Printing                     // (Prints here just call the print in System class)
         void printAllResults();         // Print all data for current  user
@@ -42,5 +51,6 @@ class MainWindow : public QMainWindow
     private:
         Ui::MainWindow *ui;
         System system;
+        QTimer *timer;
 };
 #endif // MAINWINDOW_H

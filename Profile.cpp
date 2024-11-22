@@ -26,8 +26,17 @@ void Profile::generateResults(){
     totalScans++;
 }
 
+bool Profile::addToSpecificOrgan(QString _organ, int _value){
+    for (int i = 0; i < NUM_ORGANS; i++){
+        if (_organ == organs[i]->getName()){
+            organs[i]->addData(_value);
+            return true;
+        }
+    }
+    return false;
+}
+
 void Profile::printAllResults(){
-    //for (int i=0; i<NUM_ORGANS; i++){organs[i]->printAllResults();}
     for (int i = 0; i < NUM_ORGANS; i++){
         for (int j = 0; j < organs[i]->getResultsLength(); j++){
             qInfo().noquote().nospace() << organs[i]->getName() << ": " << organs[i]->getData(j);

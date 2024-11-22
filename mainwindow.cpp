@@ -5,9 +5,18 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+
+
     ui->setupUi(this);
     ui->organSelect->addItems({"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"});
+
+    // Connect timer and set up battery
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateBattery);
+    timer->start(1000);
+    connect(ui->chargingBox, &QCheckBox::stateChanged, this, &MainWindow::updateBatteryColor);
+    updateBatteryColor();
 
     // Set up button connections
     connect(ui->genButton, &QPushButton::clicked, this, &MainWindow::generateResults);
@@ -29,7 +38,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::generateResults() {
+    if (this->checkDeadBattery()) {return;}
+    if (this->checkLowBattery()) {return;}
     if (this->checkValidProfile()) {return;}
+
 
     QPushButton *button = qobject_cast<QPushButton*>(sender());
         if (button) {
@@ -40,12 +52,14 @@ void MainWindow::generateResults() {
 }
 
 void MainWindow::newProfile() {
+    if (this->checkDeadBattery()) {return;}
+    if (this->checkLowBattery()) {return;}
+    if (this->checkValidProfile()) {return;}
+
     // Add new profile
     QLineEdit* inputTextBox = ui->newProfileInput;
     QString newUserName = inputTextBox->text();
-    bool profileAdded =  system.newProfile(newUserName);
-
-    if(!profileAdded){return;}
+    if(!system.newProfile(newUserName)){return;} // Return if profile not added properly
 
 
     // Add to combo box
@@ -73,12 +87,51 @@ void MainWindow::updateCurrentProfile(){
     }
     if ((newSlot>=0) && (newSlot<MAX_PROFILES)) {
         system.setSelectedProfileSlot(newSlot);
-
     }
 }
 
+void MainWindow::updateBattery(){
+    int currentBattery = ui->batteryBar->value();
+    if (ui->chargingBox->isChecked()) {
+        // Charging
+        if (currentBattery < 100) {
+            ui->batteryBar->setValue(currentBattery + 1);
+        }
+    } else {
+        // Draining
+        if (currentBattery > 0) {
+            ui->batteryBar->setValue(currentBattery - 1);
+        }
+    }
+    updateBatteryColor();
+}
+
+void MainWindow::updateBatteryColor(){
+    QPalette palette = ui->chargingBox->palette();
+    if (ui->chargingBox->isChecked()) {
+        // Charging - Green
+        palette.setColor(QPalette::Highlight, Qt::green);
+    }
+    else if(ui->batteryBar->value()<=LOW_BATTERY){
+        // Low battery - Yellow
+        palette.setColor(QPalette::Highlight, Qt::yellow);
+    }
+    else if(ui->batteryBar->value()<=5){
+        // Dead battery - Red
+        palette.setColor(QPalette::Highlight, Qt::red);
+    }
+    else {
+        // Draining - Gray
+        palette.setColor(QPalette::Highlight, Qt::gray);
+    }
+    ui->batteryBar->setPalette(palette);
+
+}
+
 void MainWindow::printAllResults() {
+    if (this->checkDeadBattery()) {return;}
     if (this->checkValidProfile()) {return;}
+    if (this->checkScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results - - ";
     QPushButton *button = qobject_cast<QPushButton*>(sender());
@@ -90,19 +143,22 @@ void MainWindow::printAllResults() {
 }
 
 void MainWindow::printLastResults(){
+    if (this->checkDeadBattery()) {return;}
     if (this->checkValidProfile()) {return;}
+    if (this->checkScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s most recent results - - ";
     system.printLastResults(system.getSelectedProfileSlot());
 }
 
 void MainWindow::printAverageResults(){
+    if (this->checkDeadBattery()) {return;}
     if (this->checkValidProfile()) {return;}
+    if (this->checkScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s average lifetime results - - ";
     system.printAverageResults(system.getSelectedProfileSlot());
 }
-
 
 
 void MainWindow::printProfiles() {
@@ -111,7 +167,9 @@ void MainWindow::printProfiles() {
 }
 
 void MainWindow::printOrganResults(){
+    if (this->checkDeadBattery()) {return;}
     if (this->checkValidProfile()) {return;}
+    if (this->checkScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results for the selected organ - - ";
     QComboBox* organSelect = ui->organSelect;
@@ -125,10 +183,35 @@ bool MainWindow::checkValidProfile(){
     if (system.getSelectedProfileSlot()>=system.getTotalProfiles()){
         qDebug() << "Cannot perform action. Current user is not initalized.";
         return true;
-    }else if(system.getSelectedProfileTotalScans()<=0){
+    }
+    return false;
+}
+
+// Will return true if there are NO scans
+bool MainWindow::checkScanned(){
+    if(system.getSelectedProfileTotalScans()<=0){
         qDebug() << "The  current user does not currently have any scans.";
         return true;
     }
     return false;
 }
+
+// Will return true if device IS in low battery
+bool MainWindow::checkLowBattery(){
+    if(ui->batteryBar->value() <= LOW_BATTERY){
+        qDebug() << "The device battery is too low to perform this action, please charge.";
+        return true;
+    }
+    return false;
+}
+
+// Will return true if device IS dead
+bool MainWindow::checkDeadBattery(){
+    if(ui->batteryBar->value() <= DEAD_BATTERY){
+        qDebug() << "The device is dead, please charge.";
+        return true;
+    }
+    return false;
+}
+
 

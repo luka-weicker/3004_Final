@@ -14,7 +14,8 @@ class Profile
         ~Profile();
 
         // Fucntionality
-        void generateResults();
+        void generateResults();                                 // Generate a round of results for all organs
+        bool addToSpecificOrgan(QString _organ, int _value);    // Add data to one organ by name (returns true if organ is found)
 
         // Printing
         void printAllResults();

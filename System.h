@@ -2,6 +2,7 @@
 #define SYSTEM_H
 
 #include <QString>
+
 #include "Profile.h"
 
 class System
@@ -21,6 +22,7 @@ class System
         void printProfiles();
         void printOrganResults(int _profileSlot, QString _organName);
         void printAverageResults(int _profileSlot);
+
 
 
         // Getters & setters

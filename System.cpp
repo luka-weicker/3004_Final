@@ -15,32 +15,32 @@ void System::generateResults(int _profileSlot){
 }
 
 bool System::newProfile(QString _name){
+
+    // Check if profiles are maxed
     if (totalProfiles >= MAX_PROFILES){
         qDebug().noquote().nospace() << "You already have "<<MAX_PROFILES<<" profiles, that is the max";
         totalProfiles++;
         return false;
     }
-    else{
 
-        // Check if name is blank
-        if (_name  == ""){
-            qDebug()<<"You cannot enter a blank name";
-            return false;
-        }
-
-        // Check if the name is already used
-        for (int i=0; i<profiles.length(); i++){
-            if (_name == profiles[i]->getName()){
-                qDebug()<<"This name is already in use, please use another name";
-                return false;
-            }
-        }
-
-
-        profiles.append(new Profile(_name));
-        totalProfiles++;
-        qDebug() << "Created a new user with name "<<_name;
+    // Check if name is blank
+    if (_name  == ""){
+        qDebug()<<"You cannot enter a blank name";
+        return false;
     }
+
+    // Check if the name is already used
+    for (int i=0; i<profiles.length(); i++){
+        if (_name == profiles[i]->getName()){
+             qDebug()<<"This name is already in use, please use another name";
+             return false;
+        }
+    }
+
+    // Add if new user is valid
+    profiles.append(new Profile(_name));
+    totalProfiles++;
+    qDebug() << "Created a new user with name "<<_name;
     return true;
 }
 

@@ -5,14 +5,9 @@ Organ::Organ(QString name)
     this->name = name;
 }
 
-void Organ::addData(int _dataPoint){
-    results.append(_dataPoint);
-}
+Organ::~Organ(){
 
-int Organ::getData(int _dataSlot){
-    return results.at(_dataSlot);
 }
-
 
 float Organ::getAverage(){
     float runningTotal = 0.0;
