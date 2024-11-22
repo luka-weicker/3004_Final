@@ -25,6 +25,7 @@ class Profile
 
         // Getters & setters
         inline QString getName(){return name;}
+        inline int getTotalScans() {return totalScans;}
 
     private:
         QString name;

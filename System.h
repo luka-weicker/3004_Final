@@ -13,7 +13,7 @@ class System
 
         // Funcctionality
         void generateResults(int _profileSlot);
-        void newProfile(QString _name="no_profile_name");
+        bool newProfile(QString _name="no_profile_name");
 
         // Printing
         void printAllResults(int _profileSlot);
@@ -27,6 +27,7 @@ class System
         inline int getSelectedProfileSlot() {return selectedProfileSlot;}
         inline QString getCurrentProfileName() {return profiles[selectedProfileSlot]->getName();}
         inline int getTotalProfiles() {return totalProfiles;}
+        inline int getSelectedProfileTotalScans() {return profiles[selectedProfileSlot]->getTotalScans();}
 
         inline void setSelectedProfileSlot(int _newSlot) {selectedProfileSlot = _newSlot;}
 

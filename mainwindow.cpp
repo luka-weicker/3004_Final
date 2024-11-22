@@ -43,7 +43,9 @@ void MainWindow::newProfile() {
     // Add new profile
     QLineEdit* inputTextBox = ui->newProfileInput;
     QString newUserName = inputTextBox->text();
-    system.newProfile(newUserName);
+    bool profileAdded =  system.newProfile(newUserName);
+
+    if(!profileAdded){return;}
 
 
     // Add to combo box
@@ -122,6 +124,9 @@ void MainWindow::printOrganResults(){
 bool MainWindow::checkValidProfile(){
     if (system.getSelectedProfileSlot()>=system.getTotalProfiles()){
         qDebug() << "Cannot perform action. Current user is not initalized.";
+        return true;
+    }else if(system.getSelectedProfileTotalScans()<=0){
+        qDebug() << "The  current user does not currently have any scans.";
         return true;
     }
     return false;
