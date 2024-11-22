@@ -54,7 +54,6 @@ void MainWindow::generateResults() {
 void MainWindow::newProfile() {
     if (this->checkDeadBattery()) {return;}
     if (this->checkLowBattery()) {return;}
-    if (this->checkValidProfile()) {return;}
 
     // Add new profile
     QLineEdit* inputTextBox = ui->newProfileInput;
