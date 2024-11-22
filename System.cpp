@@ -22,6 +22,7 @@ bool System::newProfile(QString _name){
     }
     else{
 
+        // Check if name is blank
         if (_name  == ""){
             qDebug()<<"You cannot enter a blank name";
             return false;
