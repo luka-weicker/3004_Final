@@ -79,6 +79,7 @@ void MainWindow::updateCurrentProfile(){
 
 void MainWindow::printAllResults() {
     if (this->checkValidProfile()) {return;}
+    if (this->checkUserScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results - - ";
     QPushButton *button = qobject_cast<QPushButton*>(sender());
@@ -91,6 +92,7 @@ void MainWindow::printAllResults() {
 
 void MainWindow::printLastResults(){
     if (this->checkValidProfile()) {return;}
+    if (this->checkUserScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s most recent results - - ";
     system.printLastResults(system.getSelectedProfileSlot());
@@ -98,6 +100,7 @@ void MainWindow::printLastResults(){
 
 void MainWindow::printAverageResults(){
     if (this->checkValidProfile()) {return;}
+    if (this->checkUserScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s average lifetime results - - ";
     system.printAverageResults(system.getSelectedProfileSlot());
@@ -112,6 +115,7 @@ void MainWindow::printProfiles() {
 
 void MainWindow::printOrganResults(){
     if (this->checkValidProfile()) {return;}
+    if (this->checkUserScanned()) {return;}
 
     qDebug().nospace().noquote() << "\n\n\n - - Here are all of "<< system.getCurrentProfileName() <<"'s results for the selected organ - - ";
     QComboBox* organSelect = ui->organSelect;
@@ -125,10 +129,16 @@ bool MainWindow::checkValidProfile(){
     if (system.getSelectedProfileSlot()>=system.getTotalProfiles()){
         qDebug() << "Cannot perform action. Current user is not initalized.";
         return true;
-    }else if(system.getSelectedProfileTotalScans()<=0){
-        qDebug() << "The  current user does not currently have any scans.";
+    }
+    return false;
+}
+
+bool MainWindow::checkUserScanned(){
+    if(system.getSelectedProfileTotalScans()<=0){
+        qDebug() << "The current user does not currently have any scans.";
         return true;
     }
     return false;
 }
+
 

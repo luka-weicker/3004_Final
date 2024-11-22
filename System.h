@@ -11,7 +11,7 @@ class System
         System();
         ~System();
 
-        // Funcctionality
+        // Functionality
         void generateResults(int _profileSlot);
         bool newProfile(QString _name="no_profile_name");
 

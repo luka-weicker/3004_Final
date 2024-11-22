@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
 
         // Functionality
         bool checkValidProfile();          // Check to see if inputted slot has a valid user
-
+        bool checkUserScanned();
 
     private slots:
         // Functionality

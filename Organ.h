@@ -13,11 +13,11 @@ class Organ
 
         void addData(int _dataPoint);
         int getData(int _dataSlot);
-        int getDataLast() {return results.last();}
+        inline int getDataLast() {return results.last();}
 
         inline QString getName(){return name;}
         float getAverage();
-        int getResultsLength(){return results.size();}
+        inline int getResultsLength(){return results.size();}
 
     private:
         QString name;
