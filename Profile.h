@@ -15,16 +15,17 @@ class Profile
 
         // Fucntionality
         void generateResults();
-        void inputResult(int _organSlot, int _v); // Input data points to a
 
         // Printing
         void printAllResults();
         void printLastResults();
         void printProfile(int _profileSlot);
         void printOrganResults(QString _organName);
+        void printAverageResults();
 
         // Getters & setters
         inline QString getName(){return name;}
+        inline int getTotalScans() {return totalScans;}
 
     private:
         QString name;
