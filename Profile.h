@@ -16,8 +16,8 @@ class Profile
         ~Profile();
 
         // Fucntionality
-        void generateResults();                                 // Generate a round of results for all organs
-        bool addToSpecificOrgan(QString _organ, int _value);    // Add data to one organ by name (returns true if organ is found)
+        void generateResults();
+        bool addToSpecificOrgan(QString _organ, int _value);
         int getLatestOrganValue(const QString &organName);
 
         // Printing
@@ -51,8 +51,6 @@ class Profile
         int metabolism_level;
         int psycho_emotional_level;
         int musculoskeletal_level;
-
-        //Organ* organs[NUM_ORGANS];
 };
 
-#endif // PROFILE_H
+#endif

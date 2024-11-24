@@ -15,6 +15,7 @@
 #include <QGraphicsTextItem>
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include "defs.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,28 +29,28 @@ class MainWindow : public QMainWindow
         MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 
-        // Checks   (These will return true if there IS a problem)
-        bool checkValidProfile();   // Check if selected profile is valid
-        bool checkScanned();        // Check if user has at least one scan
-        bool checkLowBattery();     // Check if device is in low battery mode
-        bool checkDeadBattery();    // Check if device is dead
+        // Checks (These will return true if there IS a problem)
+        bool checkValidProfile();
+        bool checkScanned();
+        bool checkLowBattery();
+        bool checkDeadBattery();
 
 
     private slots:
         // Functionality
-        void generateResults();         // Add a new random set of data for selected profile
-        void newProfile();              // Make a new  profile
-        void deleteProfile();           // delete profile
-        void updateCurrentProfile();    // Select a new currently selected user
-        void updateBattery();           // Update value of battery
-        void updateBatteryColor();      // Update color of battery
+        void generateResults();
+        void newProfile();
+        void deleteProfile();
+        void updateCurrentProfile();
+        void updateBattery();
+        void updateBatteryColor();
 
-        // Printing                     // (Prints here just call the print in System class)
-        void printAllResults();         // Print all data for current  user
-        void printLastResults();        // Print most recent data for each organ
+        // Printing
+        void printAllResults();
+        void printLastResults();
         void printHealthResults();
-        void printOrganResults();       // Print data for current organ
-        void printProfiles();           // Print all profiles
+        void printOrganResults();
+        void printProfiles();
 
 
     private:
@@ -57,4 +58,4 @@ class MainWindow : public QMainWindow
         System system;
         QTimer *timer;
 };
-#endif // MAINWINDOW_H
+#endif

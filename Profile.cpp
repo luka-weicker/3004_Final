@@ -84,7 +84,7 @@ int Profile::getLatestOrganValue(const QString &organName)
         return organData[organName].last(); // Get the latest value
     } else {
         qDebug() << "Organ data for" << organName << "is not available or empty.";
-        return -1; // Return -1 or another sentinel value to indicate missing data
+        return -1; // Missing data
     }
 }
 

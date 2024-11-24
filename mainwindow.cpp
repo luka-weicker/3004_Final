@@ -10,22 +10,21 @@ MainWindow::MainWindow(QWidget *parent)
     ui->organSelect->addItems({"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"});
 
-    // Initialize QGraphicsView with a QGraphicsScene
+    // QGraphics View setup
     auto *scene = new QGraphicsScene(this);
     ui->resultsGraphicsView->setScene(scene);
 
-    // Load profiles from System and populate the profileSelect combobox
+    // Loading profiles from JSON file
     QVector<Profile *> profiles = system.getProfiles();
     for (Profile *profile : profiles) {
         ui->profileSelect->addItem(profile->getName());
     }
 
-    // Set the current index if profiles exist
     if (!profiles.isEmpty()) {
         ui->profileSelect->setCurrentIndex(system.getSelectedProfileSlot());
     }
 
-    // Connect timer and set up battery
+    // Timer and battery setup
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::updateBattery);
     timer->start(1000);
@@ -41,8 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->printLastButton, &QPushButton::clicked, this, &MainWindow::printLastResults);
     connect(ui->printOrganButton, &QPushButton::clicked, this, &MainWindow::printOrganResults);
     connect(ui->profileSelect, &QComboBox::currentTextChanged, this, &MainWindow::updateCurrentProfile);
-
-    connect(ui->printHealthResultsButton, &QPushButton::clicked, this, &MainWindow::printHealthResults); //USED TO GENERATE DATA
+    connect(ui->printHealthResultsButton, &QPushButton::clicked, this, &MainWindow::printHealthResults);
 
     updateCurrentProfile();
     qDebug() << "Connected";
@@ -72,19 +70,17 @@ void MainWindow::newProfile() {
     if (this->checkDeadBattery()) { return; }
     if (this->checkLowBattery()) { return; }
 
-    // Add new profile
+    // Adding new profile from text field on Qt window
     QLineEdit *inputTextBox = ui->newProfileInput;
     QString newUserName = inputTextBox->text();
-    if (!system.newProfile(newUserName)) { return; } // Return if profile not added properly
+    if (!system.newProfile(newUserName)) { return; }
 
-    // Add to combo box
+    // Adding to combo box
     ui->profileSelect->addItem(newUserName);
     ui->profileSelect->setCurrentIndex(system.getTotalProfiles() - 1);
 
-    // Update current selected profile
-    updateCurrentProfile();
 
-    // Clear name box
+    updateCurrentProfile();
     ui->newProfileInput->clear();
 }
 
@@ -93,16 +89,15 @@ void MainWindow::deleteProfile()
     if (this->checkDeadBattery()) { return; }
     if (this->checkValidProfile()) { return; }
 
+    // Getting profile slot
     int currentSlot = ui->profileSelect->currentIndex();
-    QString profileName = system.getProfiles().at(currentSlot)->getName(); // Get the name before deletion
+    QString profileName = system.getProfiles().at(currentSlot)->getName();
 
     if (system.deleteProfile(currentSlot)) {
         qDebug() << "Profile: " << profileName << "deleted.";
 
         // Update the combobox
         ui->profileSelect->removeItem(currentSlot);
-
-        // Set the combobox to the first item if profiles exist, otherwise clear selection
         if (ui->profileSelect->count() > 0) {
             ui->profileSelect->setCurrentIndex(0);
         } else {
@@ -113,6 +108,9 @@ void MainWindow::deleteProfile()
     } else {
         qDebug() << "Profile could not be deleted.";
     }
+
+    QGraphicsScene *scene = ui->resultsGraphicsView->scene();
+    scene->clear();
 }
 
 
@@ -121,17 +119,13 @@ void MainWindow::updateCurrentProfile()
     QComboBox *profileSelectBox = ui->profileSelect;
     int newSlot = profileSelectBox->currentIndex();
 
-    // Check if the combobox is empty
     if (newSlot < 0 || profileSelectBox->count() == 0) {
-        system.setSelectedProfileSlot(-1); // No valid selection
-        //qDebug() << "No profile selected.";
+        system.setSelectedProfileSlot(-1); // Invalid choice
         return;
     }
 
     system.setSelectedProfileSlot(newSlot);
 }
-
-
 
 void MainWindow::updateBattery(){
     int currentBattery = ui->batteryBar->value();
@@ -202,10 +196,8 @@ void MainWindow::printHealthResults()
 
     int selectedProfileSlot = system.getSelectedProfileSlot();
 
-    // Analyze health results
+    // Analyze health results before putting onto screen (filling profile values)
     system.analyzeHealthResults(selectedProfileSlot);
-
-    // Access the QGraphicsScene from the graphicsView
     QGraphicsScene *scene = ui->resultsGraphicsView->scene();
 
     if (!scene) {
@@ -213,10 +205,9 @@ void MainWindow::printHealthResults()
         return;
     }
 
-    // Clear any existing content in the scene
     scene->clear();
 
-    // Retrieve dynamic values
+    // Obtaining values from helper functions
     QVector<QPair<QString, int>> healthResults = {
         {"Energy", system.getProfileEnergy(selectedProfileSlot)},
         {"Immune System", system.getProfileIS(selectedProfileSlot)},
@@ -225,15 +216,14 @@ void MainWindow::printHealthResults()
         {"Musculoskeletal", system.getProfileMusc(selectedProfileSlot)}
     };
 
-    // Add each value as a line in the QGraphicsScene with dynamic colors
-    int yOffset = 0;                // Initial Y position
-    const int lineSpacing = 20;     // Spacing between lines
+    int yOffset = 0;
+    const int lineSpacing = 20;
 
     for (const auto &result : healthResults) {
         QString label = result.first;
         int value = result.second;
 
-        // Determine the color based on thresholds
+        // Determining which colour to use
         QColor color;
         if (value < BELOW_HEALTHY) {
             color = Qt::blue;
@@ -243,18 +233,14 @@ void MainWindow::printHealthResults()
             color = Qt::green;
         }
 
-        // Create and position the text item
         QString text = QString("%1: %2%").arg(label).arg(value);
         QGraphicsTextItem *textItem = scene->addText(text);
         textItem->setDefaultTextColor(color);
         textItem->setPos(0, yOffset);
 
-        yOffset += lineSpacing; // Move to the next line
+        yOffset += lineSpacing;
     }
 }
-
-
-
 
 void MainWindow::printProfiles() {
     qDebug() << "\n\n\n - - Here are all of your profiles - - ";
@@ -283,7 +269,7 @@ bool MainWindow::checkValidProfile()
         return true; // Indicates an issue (no profile selected)
     }
 
-    return false; // No issues, a valid profile is selected
+    return false;
 }
 
 

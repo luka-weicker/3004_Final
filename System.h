@@ -51,4 +51,4 @@ class System
         QVector<Profile*> profiles;
 };
 
-#endif // SYSTEM_H
+#endif

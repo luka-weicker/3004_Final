@@ -13,4 +13,4 @@ public:
     static bool writeJson(const QString &filePath, const QJsonDocument &doc);
 };
 
-#endif // FILEHANDLER_H
+#endif
