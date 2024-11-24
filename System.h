@@ -23,13 +23,12 @@ class System
         void printLastResults(int _profileSlot);
         void printProfiles();
         void printOrganResults(int _profileSlot, QString _organName);
-        void printAverageResults(int _profileSlot);
+
+        void analyzeHealthResults(int _profileSlot);
 
         // Persistence
         void loadProfiles();
         void saveProfiles();
-
-
 
         // Getters & setters
         inline int getSelectedProfileSlot() { return selectedProfileSlot; }
@@ -37,6 +36,12 @@ class System
         inline int getTotalProfiles() { return totalProfiles; }
         inline int getSelectedProfileTotalScans() { return profiles[selectedProfileSlot]->getTotalScans(); }
         inline QVector<Profile *> getProfiles() { return profiles; }
+
+        inline int getProfileEnergy(int profileSlot){return profiles[selectedProfileSlot]->getEnergy();}
+        inline int getProfileIS(int profileSlot){return profiles[selectedProfileSlot]->getIS();}
+        inline int getProfileMetabolism(int profileSlot){return profiles[selectedProfileSlot]->getMetabolism();}
+        inline int getProfilePsycho(int profileSlot){return profiles[selectedProfileSlot]->getPsycho();}
+        inline int getProfileMusc(int profileSlot){return profiles[selectedProfileSlot]->getMusc();}
 
         inline void setSelectedProfileSlot(int _newSlot) { selectedProfileSlot = _newSlot; }
 

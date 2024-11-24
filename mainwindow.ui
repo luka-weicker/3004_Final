@@ -60,7 +60,7 @@
      <rect>
       <x>530</x>
       <y>160</y>
-      <width>209</width>
+      <width>248</width>
       <height>120</height>
      </rect>
     </property>
@@ -68,21 +68,21 @@
      <item row="0" column="0" colspan="2">
       <widget class="QPushButton" name="printAllButton">
        <property name="text">
-        <string>Print All Results</string>
+        <string>Print All Raw Results</string>
        </property>
       </widget>
      </item>
      <item row="3" column="1">
       <widget class="QPushButton" name="printOrganButton">
        <property name="text">
-        <string>Org. Res.</string>
+        <string>Show Raw Organ Data</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0" colspan="2">
       <widget class="QPushButton" name="printLastButton">
        <property name="text">
-        <string>Print Last Results</string>
+        <string>Print Last Raw Results</string>
        </property>
       </widget>
      </item>
@@ -90,9 +90,9 @@
       <widget class="QComboBox" name="organSelect"/>
      </item>
      <item row="2" column="0" colspan="2">
-      <widget class="QPushButton" name="printAveragesButton">
+      <widget class="QPushButton" name="printHealthResultsButton">
        <property name="text">
-        <string>Print Lifetime Averages</string>
+        <string>Display Latest Analysis</string>
        </property>
       </widget>
      </item>
@@ -222,6 +222,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QGraphicsView" name="resultsGraphicsView">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>310</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -6,6 +6,11 @@ Profile::Profile(QString _name)
 {
     name = _name;
     totalScans = 0;
+    energy_level = 0;
+    immune_system_level = 0;
+    metabolism_level = 0;
+    psycho_emotional_level = 0;
+    musculoskeletal_level = 0;
 
     QString organNames[] = {"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"};
@@ -21,7 +26,7 @@ Profile::~Profile(){
 
 void Profile::generateResults(){
     for (auto &dataVector : organData) {
-        int v = QRandomGenerator::global()->bounded(300);
+        int v = QRandomGenerator::global()->bounded(200);
         dataVector.append(v);
     }
     totalScans++;
@@ -65,16 +70,24 @@ void Profile::printOrganResults(QString _organName){
     }
 }
 
-void Profile::printAverageResults()   {
-    for (auto it = organData.begin(); it != organData.end(); ++it) {
-        double sum = 0;
-        for (int value : it.value()) {
-            sum += value;
-        }
-        double average = it.value().isEmpty() ? 0 : sum / it.value().size();
-        qDebug().noquote().nospace() << it.key() << ": \t" << average;
+void Profile::analyzeHealthResults()   {
+    energy_level = (getLatestOrganValue("Heart")+getLatestOrganValue("Lungs")+getLatestOrganValue("Liver")+getLatestOrganValue("Kidney")+getLatestOrganValue("Adrenal Glands"))/5;
+    immune_system_level = (getLatestOrganValue("Spleen")+getLatestOrganValue("Lungs")+getLatestOrganValue("Liver")+getLatestOrganValue("Large Intestine")+getLatestOrganValue("Small Intestine"))/5;
+    metabolism_level = (getLatestOrganValue("Liver")+getLatestOrganValue("Pancreas")+getLatestOrganValue("Stomach")+getLatestOrganValue("Small Intestine")+getLatestOrganValue("Gallbladder"))/5;
+    psycho_emotional_level = (getLatestOrganValue("Heart")+getLatestOrganValue("Liver")+getLatestOrganValue("Adrenal Glands")+getLatestOrganValue("Kidney"))/5;
+    musculoskeletal_level = (getLatestOrganValue("Kidney")+getLatestOrganValue("Liver")+getLatestOrganValue("Spleen")+getLatestOrganValue("Adrenal Glands")+getLatestOrganValue("Gallbladder"))/5;
+}
+
+int Profile::getLatestOrganValue(const QString &organName)
+{
+    if (organData.contains(organName) && !organData[organName].isEmpty()) {
+        return organData[organName].last(); // Get the latest value
+    } else {
+        qDebug() << "Organ data for" << organName << "is not available or empty.";
+        return -1; // Return -1 or another sentinel value to indicate missing data
     }
 }
+
 
 QJsonObject Profile::toJson() const
 {

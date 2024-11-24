@@ -12,6 +12,9 @@
 #include <QCheckBox>
 #include <QTimer>
 #include <QPalette>
+#include <QGraphicsTextItem>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -44,7 +47,7 @@ class MainWindow : public QMainWindow
         // Printing                     // (Prints here just call the print in System class)
         void printAllResults();         // Print all data for current  user
         void printLastResults();        // Print most recent data for each organ
-        void printAverageResults();
+        void printHealthResults();
         void printOrganResults();       // Print data for current organ
         void printProfiles();           // Print all profiles
 

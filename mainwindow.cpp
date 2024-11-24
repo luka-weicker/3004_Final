@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->organSelect->addItems({"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"});
 
+    // Initialize QGraphicsView with a QGraphicsScene
+    auto *scene = new QGraphicsScene(this);
+    ui->resultsGraphicsView->setScene(scene);
+
     // Load profiles from System and populate the profileSelect combobox
     QVector<Profile *> profiles = system.getProfiles();
     for (Profile *profile : profiles) {
@@ -37,10 +41,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->printLastButton, &QPushButton::clicked, this, &MainWindow::printLastResults);
     connect(ui->printOrganButton, &QPushButton::clicked, this, &MainWindow::printOrganResults);
     connect(ui->profileSelect, &QComboBox::currentTextChanged, this, &MainWindow::updateCurrentProfile);
-    connect(ui->printAveragesButton, &QPushButton::clicked, this, &MainWindow::printAverageResults);
+
+    connect(ui->printHealthResultsButton, &QPushButton::clicked, this, &MainWindow::printHealthResults); //USED TO GENERATE DATA
 
     updateCurrentProfile();
-
     qDebug() << "Connected";
 }
 
@@ -120,7 +124,7 @@ void MainWindow::updateCurrentProfile()
     // Check if the combobox is empty
     if (newSlot < 0 || profileSelectBox->count() == 0) {
         system.setSelectedProfileSlot(-1); // No valid selection
-        qDebug() << "No profile selected.";
+        //qDebug() << "No profile selected.";
         return;
     }
 
@@ -190,14 +194,66 @@ void MainWindow::printLastResults(){
     system.printLastResults(system.getSelectedProfileSlot());
 }
 
-void MainWindow::printAverageResults(){
-    if (this->checkDeadBattery()) {return;}
-    if (this->checkValidProfile()) {return;}
-    if (this->checkScanned()) {return;}
+void MainWindow::printHealthResults()
+{
+    if (this->checkDeadBattery()) { return; }
+    if (this->checkValidProfile()) { return; }
+    if (this->checkScanned()) { return; }
 
-    qDebug().nospace().noquote() << "\n\n\n - - Here are "<< system.getCurrentProfileName() <<"'s average lifetime results - - ";
-    system.printAverageResults(system.getSelectedProfileSlot());
+    int selectedProfileSlot = system.getSelectedProfileSlot();
+
+    // Analyze health results
+    system.analyzeHealthResults(selectedProfileSlot);
+
+    // Access the QGraphicsScene from the graphicsView
+    QGraphicsScene *scene = ui->resultsGraphicsView->scene();
+
+    if (!scene) {
+        qDebug() << "Graphics scene is not initialized.";
+        return;
+    }
+
+    // Clear any existing content in the scene
+    scene->clear();
+
+    // Retrieve dynamic values
+    QVector<QPair<QString, int>> healthResults = {
+        {"Energy", system.getProfileEnergy(selectedProfileSlot)},
+        {"Immune System", system.getProfileIS(selectedProfileSlot)},
+        {"Metabolism", system.getProfileMetabolism(selectedProfileSlot)},
+        {"Psycho-Emotional", system.getProfilePsycho(selectedProfileSlot)},
+        {"Musculoskeletal", system.getProfileMusc(selectedProfileSlot)}
+    };
+
+    // Add each value as a line in the QGraphicsScene with dynamic colors
+    int yOffset = 0;                // Initial Y position
+    const int lineSpacing = 20;     // Spacing between lines
+
+    for (const auto &result : healthResults) {
+        QString label = result.first;
+        int value = result.second;
+
+        // Determine the color based on thresholds
+        QColor color;
+        if (value < BELOW_HEALTHY) {
+            color = Qt::blue;
+        } else if (value > ABOVE_HEALTHY) {
+            color = Qt::red;
+        } else {
+            color = Qt::green;
+        }
+
+        // Create and position the text item
+        QString text = QString("%1: %2%").arg(label).arg(value);
+        QGraphicsTextItem *textItem = scene->addText(text);
+        textItem->setDefaultTextColor(color);
+        textItem->setPos(0, yOffset);
+
+        yOffset += lineSpacing; // Move to the next line
+    }
 }
+
+
 
 
 void MainWindow::printProfiles() {

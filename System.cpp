@@ -102,8 +102,8 @@ void System::printOrganResults(int _profileSlot, QString _organName){
     profiles[_profileSlot]->printOrganResults(_organName);
 }
 
-void System::printAverageResults(int _profileSlot){
-    profiles[_profileSlot]->printAverageResults();
+void System::analyzeHealthResults(int _profileSlot){
+    profiles[_profileSlot]->analyzeHealthResults();
 }
 
 void System::loadProfiles()
