@@ -236,7 +236,7 @@
      <item>
       <widget class="QProgressBar" name="batteryBar">
        <property name="value">
-        <number>24</number>
+        <number>100</number>
        </property>
       </widget>
      </item>
