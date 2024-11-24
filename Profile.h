@@ -2,8 +2,10 @@
 #define PROFILE_H
 
 #include <QString>
-#include "Organ.h"
-#include <QRandomGenerator>
+#include <QMap>
+#include <QVector>
+#include <QJsonObject>
+#include <QJsonArray>
 #include "defs.h"
 
 class Profile
@@ -24,6 +26,10 @@ class Profile
         void printOrganResults(QString _organName);
         void printAverageResults();
 
+        //json
+        QJsonObject toJson() const;
+        void fromJson(const QJsonObject &json);
+
         // Getters & setters
         inline QString getName(){return name;}
         inline int getTotalScans() {return totalScans;}
@@ -31,7 +37,8 @@ class Profile
     private:
         QString name;
         int totalScans;
-        Organ* organs[NUM_ORGANS];
+        QMap<QString, QVector<int>> organData;
+        //Organ* organs[NUM_ORGANS];
 };
 
 #endif // PROFILE_H

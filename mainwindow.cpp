@@ -6,10 +6,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
 
-
     ui->setupUi(this);
     ui->organSelect->addItems({"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"});
+
+    // Load profiles from System and populate the profileSelect combobox
+    QVector<Profile *> profiles = system.getProfiles();
+    for (Profile *profile : profiles) {
+        ui->profileSelect->addItem(profile->getName());
+    }
+
+    // Set the current index if profiles exist
+    if (!profiles.isEmpty()) {
+        ui->profileSelect->setCurrentIndex(system.getSelectedProfileSlot());
+    }
 
     // Connect timer and set up battery
     timer = new QTimer(this);
@@ -22,11 +32,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->genButton, &QPushButton::clicked, this, &MainWindow::generateResults);
     connect(ui->printAllButton, &QPushButton::clicked, this, &MainWindow::printAllResults);
     connect(ui->newProfileButton, &QPushButton::clicked, this, &MainWindow::newProfile);
+    connect(ui->deleteProfileButton, &QPushButton::clicked, this, &MainWindow::deleteProfile);
     connect(ui->showProfiles, &QPushButton::clicked, this, &MainWindow::printProfiles);
     connect(ui->printLastButton, &QPushButton::clicked, this, &MainWindow::printLastResults);
     connect(ui->printOrganButton, &QPushButton::clicked, this, &MainWindow::printOrganResults);
     connect(ui->profileSelect, &QComboBox::currentTextChanged, this, &MainWindow::updateCurrentProfile);
     connect(ui->printAveragesButton, &QPushButton::clicked, this, &MainWindow::printAverageResults);
+
+    updateCurrentProfile();
 
     qDebug() << "Connected";
 }
@@ -47,47 +60,74 @@ void MainWindow::generateResults() {
         if (button) {
             QString buttonText = button->text();
             system.generateResults(system.getSelectedProfileSlot());
-            qDebug() << "System scan complete,  data has been stored";
+            qDebug() << "System scan complete for: " << system.getCurrentProfileName() << ",  data has been stored";
         }
 }
 
 void MainWindow::newProfile() {
-    if (this->checkDeadBattery()) {return;}
-    if (this->checkLowBattery()) {return;}
+    if (this->checkDeadBattery()) { return; }
+    if (this->checkLowBattery()) { return; }
 
     // Add new profile
-    QLineEdit* inputTextBox = ui->newProfileInput;
+    QLineEdit *inputTextBox = ui->newProfileInput;
     QString newUserName = inputTextBox->text();
-    if(!system.newProfile(newUserName)){return;} // Return if profile not added properly
-
+    if (!system.newProfile(newUserName)) { return; } // Return if profile not added properly
 
     // Add to combo box
-    QComboBox *comboBox = ui->profileSelect;
-    comboBox->addItem(newUserName);
-    comboBox->setCurrentIndex(system.getTotalProfiles()-1);
+    ui->profileSelect->addItem(newUserName);
+    ui->profileSelect->setCurrentIndex(system.getTotalProfiles() - 1);
 
-    //  Update current selected profile
+    // Update current selected profile
     updateCurrentProfile();
 
     // Clear name box
-    QLineEdit *lineEdit = ui->newProfileInput;
-    lineEdit->setText("");
+    ui->newProfileInput->clear();
 }
 
-void MainWindow::updateCurrentProfile(){
-    QComboBox* profileSelecctBox = ui->profileSelect;
-    int newSlot = profileSelecctBox->currentIndex();
+void MainWindow::deleteProfile()
+{
+    if (this->checkDeadBattery()) { return; }
+    if (this->checkValidProfile()) { return; }
 
-    // Check if selected user is out of range
-    if (newSlot>=system.getTotalProfiles()){
-        qDebug() << "Selected user is not initialized yet, please create a new user for this slot";
-        qDebug() << "Current user did not change";
+    int currentSlot = ui->profileSelect->currentIndex();
+    QString profileName = system.getProfiles().at(currentSlot)->getName(); // Get the name before deletion
+
+    if (system.deleteProfile(currentSlot)) {
+        qDebug() << "Profile: " << profileName << "deleted.";
+
+        // Update the combobox
+        ui->profileSelect->removeItem(currentSlot);
+
+        // Set the combobox to the first item if profiles exist, otherwise clear selection
+        if (ui->profileSelect->count() > 0) {
+            ui->profileSelect->setCurrentIndex(0);
+        } else {
+            ui->profileSelect->clear();
+        }
+
+        updateCurrentProfile();
+    } else {
+        qDebug() << "Profile could not be deleted.";
+    }
+}
+
+
+void MainWindow::updateCurrentProfile()
+{
+    QComboBox *profileSelectBox = ui->profileSelect;
+    int newSlot = profileSelectBox->currentIndex();
+
+    // Check if the combobox is empty
+    if (newSlot < 0 || profileSelectBox->count() == 0) {
+        system.setSelectedProfileSlot(-1); // No valid selection
+        qDebug() << "No profile selected.";
         return;
     }
-    if ((newSlot>=0) && (newSlot<MAX_PROFILES)) {
-        system.setSelectedProfileSlot(newSlot);
-    }
+
+    system.setSelectedProfileSlot(newSlot);
 }
+
+
 
 void MainWindow::updateBattery(){
     int currentBattery = ui->batteryBar->value();

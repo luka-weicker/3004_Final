@@ -1,7 +1,0 @@
-hello
-
-hi x 2
-
-hello from Luka
-
-jad hello!!

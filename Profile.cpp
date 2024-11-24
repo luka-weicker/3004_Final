@@ -1,4 +1,6 @@
 #include "Profile.h"
+#include <QRandomGenerator>
+#include <QDebug>
 
 Profile::Profile(QString _name)
 {
@@ -8,8 +10,8 @@ Profile::Profile(QString _name)
     QString organNames[] = {"Heart", "Lungs", "Liver", "Kidney", "Spleen", "Stomach",
     "Large Intestine", "Small Intestine", "Bladder", "Gallbladder", "Pancreas", "Adrenal Glands"};
 
-    for (int i=0; i<NUM_ORGANS; i++){
-        organs[i] = new Organ(organNames[i]);
+    for (const QString &organName : organNames) {
+        organData[organName] = QVector<int>();
     }
 }
 
@@ -18,35 +20,34 @@ Profile::~Profile(){
 }
 
 void Profile::generateResults(){
-    int v;
-    for (int i = 0; i<NUM_ORGANS; i++){
-        v = QRandomGenerator::global()->bounded(300);
-        organs[i]->addData(v);
+    for (auto &dataVector : organData) {
+        int v = QRandomGenerator::global()->bounded(300);
+        dataVector.append(v);
     }
     totalScans++;
 }
 
 bool Profile::addToSpecificOrgan(QString _organ, int _value){
-    for (int i = 0; i < NUM_ORGANS; i++){
-        if (_organ == organs[i]->getName()){
-            organs[i]->addData(_value);
-            return true;
-        }
+    if (organData.contains(_organ)) {
+        organData[_organ].append(_value);
+        return true;
     }
     return false;
 }
 
 void Profile::printAllResults(){
-    for (int i = 0; i < NUM_ORGANS; i++){
-        for (int j = 0; j < organs[i]->getResultsLength(); j++){
-            qInfo().noquote().nospace() << organs[i]->getName() << ": " << organs[i]->getData(j);
+    for (auto it = organData.begin(); it != organData.end(); ++it) {
+        for (int value : it.value()) {
+            qInfo().noquote().nospace() << it.key() << ": " << value;
         }
     }
 }
 
 void Profile::printLastResults(){
-    for (int i=0; i<NUM_ORGANS; i++){
-        qInfo().noquote().nospace() << organs[i]->getName() << ": " <<organs[i]->getDataLast();
+    for (auto it = organData.begin(); it != organData.end(); ++it) {
+        if (!it.value().isEmpty()) {
+            qInfo().noquote().nospace() << it.key() << ": " << it.value().last();
+        }
     }
 }
 
@@ -55,17 +56,57 @@ void Profile::printProfile(int _profileSlot){
 }
 
 void Profile::printOrganResults(QString _organName){
-    for (int i=0; i<NUM_ORGANS; i++){
-        if (organs[i]->getName() == _organName){
-            for (int j = 0; j < organs[i]->getResultsLength(); j++){
-                qInfo().noquote().nospace() << organs[i]->getName() << ": " << organs[i]->getData(j);
-            }
+    if (organData.contains(_organName)) {
+        for (int value : organData[_organName]) {
+            qInfo().noquote().nospace() << _organName << ": " << value;
         }
+    } else {
+        qDebug() << "Organ not found.";
     }
 }
 
 void Profile::printAverageResults()   {
-    for (int i=0; i<NUM_ORGANS; i++){
-        qDebug().noquote().nospace() << organs[i]->getName() << ": \t"<<organs[i]->getAverage();
+    for (auto it = organData.begin(); it != organData.end(); ++it) {
+        double sum = 0;
+        for (int value : it.value()) {
+            sum += value;
+        }
+        double average = it.value().isEmpty() ? 0 : sum / it.value().size();
+        qDebug().noquote().nospace() << it.key() << ": \t" << average;
+    }
+}
+
+QJsonObject Profile::toJson() const
+{
+    QJsonObject json;
+    json["name"] = name;
+    json["totalScans"] = totalScans;
+
+    QJsonObject organsJson;
+    for (auto it = organData.begin(); it != organData.end(); ++it) {
+        QJsonArray dataArray;
+        for (int value : it.value()) {
+            dataArray.append(value);
+        }
+        organsJson[it.key()] = dataArray;
+    }
+    json["organData"] = organsJson;
+    return json;
+}
+
+void Profile::fromJson(const QJsonObject &json)
+{
+    name = json["name"].toString();
+    totalScans = json["totalScans"].toInt();
+
+    organData.clear();
+    QJsonObject organsJson = json["organData"].toObject();
+    for (auto it = organsJson.begin(); it != organsJson.end(); ++it) {
+        QJsonArray dataArray = it.value().toArray();
+        QVector<int> dataVector;
+        for (const QJsonValue &value : dataArray) {
+            dataVector.append(value.toInt());
+        }
+        organData[it.key()] = dataVector;
     }
 }

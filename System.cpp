@@ -4,6 +4,7 @@ System::System()
 {
     totalProfiles = 0;
     selectedProfileSlot=0;
+    loadProfiles();
 }
 
 System::~System(){
@@ -12,6 +13,7 @@ System::~System(){
 
 void System::generateResults(int _profileSlot){
     profiles[_profileSlot]->generateResults();
+    saveProfiles();
 }
 
 bool System::newProfile(QString _name){
@@ -38,11 +40,47 @@ bool System::newProfile(QString _name){
     }
 
     // Add if new user is valid
-    profiles.append(new Profile(_name));
+    Profile *newProfile = new Profile(_name);
+    profiles.append(newProfile);
     totalProfiles++;
-    qDebug() << "Created a new user with name "<<_name;
+    qDebug() << "New profile added: " << _name;
+
+    saveProfiles();
     return true;
 }
+
+bool System::deleteProfile(int profileSlot)
+{
+    // Check if the profileSlot is valid
+    if (profileSlot < 0 || profileSlot >= profiles.size()) {
+        qDebug() << "Invalid profile selection. Cannot delete.";
+        return false;
+    }
+
+    // Get the name of the profile before deletion for logging
+    QString deletedProfileName = profiles[profileSlot]->getName();
+
+    // Free the memory allocated for the profile
+    delete profiles[profileSlot];
+
+    // Remove the profile from the vector
+    profiles.removeAt(profileSlot);
+    totalProfiles--;
+
+    // Adjust selectedProfileSlot if necessary
+    if (totalProfiles == 0) {
+        selectedProfileSlot = -1; // No profiles left
+    } else if (profileSlot <= selectedProfileSlot) {
+        selectedProfileSlot = (selectedProfileSlot == 0) ? 0 : selectedProfileSlot - 1; // Adjust index
+    }
+
+    // Save the updated profiles to the JSON file
+    saveProfiles();
+
+    return true;
+}
+
+
 
 void System::printAllResults(int _profileSlot){
     profiles[_profileSlot]->printAllResults();
@@ -66,4 +104,33 @@ void System::printOrganResults(int _profileSlot, QString _organName){
 
 void System::printAverageResults(int _profileSlot){
     profiles[_profileSlot]->printAverageResults();
+}
+
+void System::loadProfiles()
+{
+    QJsonDocument doc = FileHandler::readJson("profiles.json");
+    if (doc.isNull() || !doc.isArray()) {
+        qDebug() << "No profiles found or invalid format.";
+        return;
+    }
+
+    QJsonArray profilesArray = doc.array();
+    for (const QJsonValue &value : profilesArray) {
+        QJsonObject profileJson = value.toObject();
+        Profile *profile = new Profile();
+        profile->fromJson(profileJson);
+        profiles.append(profile);
+        totalProfiles++;
+    }
+}
+
+void System::saveProfiles()
+{
+    QJsonArray profilesArray;
+    for (Profile *profile : profiles) {
+        profilesArray.append(profile->toJson());
+    }
+    QJsonDocument doc(profilesArray);
+    //qDebug() << "Current working directory:" << QDir::currentPath(); FOR TESTING
+    FileHandler::writeJson("profiles.json", doc);
 }

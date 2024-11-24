@@ -37,7 +37,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>290</y>
+      <y>350</y>
       <width>261</width>
       <height>58</height>
      </rect>
@@ -87,33 +87,7 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QComboBox" name="organSelect">
-       <item>
-        <property name="text">
-         <string>Heart</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Lungs</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Liver</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Kidney</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Stomach</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="organSelect"/>
      </item>
      <item row="2" column="0" colspan="2">
       <widget class="QPushButton" name="printAveragesButton">
@@ -130,24 +104,31 @@
       <x>20</x>
       <y>160</y>
       <width>261</width>
-      <height>131</height>
+      <height>181</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="profileSelectLayout">
-     <item row="1" column="0" colspan="2">
-      <widget class="QPushButton" name="showProfiles">
+     <item row="0" column="0">
+      <widget class="QLabel" name="profileLabel">
        <property name="text">
-        <string>Show All Profiles</string>
+        <string>Current Profile:</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
       <widget class="QComboBox" name="profileSelect"/>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="profileLabel">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="showProfiles">
        <property name="text">
-        <string>Current Profile:</string>
+        <string>Show All Profiles</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="deleteProfileButton">
+       <property name="text">
+        <string>Delete Profile</string>
        </property>
       </widget>
      </item>

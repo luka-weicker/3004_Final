@@ -9,17 +9,17 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Organ.cpp \
     Profile.cpp \
     System.cpp \
+    filehandler.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    Organ.h \
     Profile.h \
     System.h \
     defs.h \
+    filehandler.h \
     mainwindow.h
 
 FORMS += \
@@ -31,4 +31,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    data.json \
+    data.json \
     data/data.json

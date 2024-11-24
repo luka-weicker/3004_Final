@@ -36,6 +36,7 @@ class MainWindow : public QMainWindow
         // Functionality
         void generateResults();         // Add a new random set of data for selected profile
         void newProfile();              // Make a new  profile
+        void deleteProfile();           // delete profile
         void updateCurrentProfile();    // Select a new currently selected user
         void updateBattery();           // Update value of battery
         void updateBatteryColor();      // Update color of battery
