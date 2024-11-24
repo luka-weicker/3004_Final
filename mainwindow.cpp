@@ -218,13 +218,18 @@ void MainWindow::printOrganResults(){
 }
 
 // Will return true if position is NOT valid
-bool MainWindow::checkValidProfile(){
-    if (system.getSelectedProfileSlot()>=system.getTotalProfiles()){
-        qDebug() << "Cannot perform action. Current user is not initalized.";
-        return true;
+bool MainWindow::checkValidProfile()
+{
+    int selectedSlot = system.getSelectedProfileSlot();
+
+    if (selectedSlot < 0 || selectedSlot >= system.getTotalProfiles()) {
+        qDebug() << "No profile is currently selected. Please select a profile to proceed.";
+        return true; // Indicates an issue (no profile selected)
     }
-    return false;
+
+    return false; // No issues, a valid profile is selected
 }
+
 
 // Will return true if there are NO scans
 bool MainWindow::checkScanned(){
