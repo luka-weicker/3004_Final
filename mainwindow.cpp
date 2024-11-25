@@ -62,7 +62,7 @@ void MainWindow::generateResults() {
         if (button) {
             QString buttonText = button->text();
             system.generateResults(system.getSelectedProfileSlot());
-            qDebug() << "System scan complete for: " << system.getCurrentProfileName() << ",  data has been stored";
+            qDebug() << "System scan complete for: " << system.getCurrentProfileName() << ", data has been stored";
         }
 }
 
@@ -240,7 +240,32 @@ void MainWindow::printHealthResults()
 
         yOffset += lineSpacing;
     }
+
+    // Legend
+    yOffset += lineSpacing;
+    QGraphicsTextItem *legendTitle = scene->addText("Legend:");
+    legendTitle->setDefaultTextColor(Qt::black);
+    legendTitle->setPos(0, yOffset);
+
+    yOffset += lineSpacing;
+
+    QGraphicsTextItem *blueLegend = scene->addText("Blue: Below Normal");
+    blueLegend->setDefaultTextColor(Qt::blue);
+    blueLegend->setPos(0, yOffset);
+
+    yOffset += lineSpacing;
+
+    QGraphicsTextItem *greenLegend = scene->addText("Green: Normal");
+    greenLegend->setDefaultTextColor(Qt::green);
+    greenLegend->setPos(0, yOffset);
+
+    yOffset += lineSpacing;
+
+    QGraphicsTextItem *redLegend = scene->addText("Red: Above Normal");
+    redLegend->setDefaultTextColor(Qt::red);
+    redLegend->setPos(0, yOffset);
 }
+
 
 void MainWindow::printProfiles() {
     qDebug() << "\n\n\n - - Here are all of your profiles - - ";

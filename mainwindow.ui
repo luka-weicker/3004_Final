@@ -75,7 +75,7 @@
      <item row="3" column="1">
       <widget class="QPushButton" name="printOrganButton">
        <property name="text">
-        <string>Show Raw Organ Data</string>
+        <string>Organ Data</string>
        </property>
       </widget>
      </item>
@@ -200,8 +200,8 @@
    <widget class="QWidget" name="verticalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>640</x>
-      <y>470</y>
+      <x>630</x>
+      <y>10</y>
       <width>160</width>
       <height>80</height>
      </rect>
@@ -211,6 +211,13 @@
       <widget class="QCheckBox" name="chargingBox">
        <property name="text">
         <string>Charging</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Battery:</string>
        </property>
       </widget>
      </item>
@@ -226,10 +233,10 @@
    <widget class="QGraphicsView" name="resultsGraphicsView">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>310</y>
+      <x>530</x>
+      <y>300</y>
       <width>256</width>
-      <height>192</height>
+      <height>241</height>
      </rect>
     </property>
    </widget>
