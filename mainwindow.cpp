@@ -14,6 +14,17 @@ MainWindow::MainWindow(QWidget *parent)
     auto *scene = new QGraphicsScene(this);
     ui->resultsGraphicsView->setScene(scene);
 
+    auto *recs_scene = new QGraphicsScene(this);
+    ui->recommendationsGraphicsView->setScene(recs_scene);
+    int yOffset = 0;
+    const int lineSpacing = 20;
+    QGraphicsTextItem *recs_title = recs_scene->addText("Once a specialist is available, recommendations will be posted here.");
+    recs_title->setDefaultTextColor(Qt::black);
+    recs_title->setTextWidth(ui->recommendationsGraphicsView->width());
+    recs_title->setPos(0, yOffset);
+
+
+
     // Loading profiles from JSON file
     QVector<Profile *> profiles = system.getProfiles();
     for (Profile *profile : profiles) {

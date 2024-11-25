@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>320</x>
-      <y>160</y>
+      <y>70</y>
       <width>168</width>
-      <height>89</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="generateLayout">
@@ -237,6 +237,37 @@
       <y>300</y>
       <width>256</width>
       <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="title_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>420</y>
+      <width>211</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DejaVu Sans</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Specialist Recommendation</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="recommendationsGraphicsView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>450</y>
+      <width>256</width>
+      <height>81</height>
      </rect>
     </property>
    </widget>
