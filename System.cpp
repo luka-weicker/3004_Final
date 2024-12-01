@@ -8,7 +8,9 @@ System::System()
 }
 
 System::~System(){
-
+    for (int i =0; i < profiles.size(); i++){
+        delete profiles.at(i);
+    }
 }
 
 void System::generateResults(int _profileSlot){
@@ -21,7 +23,6 @@ bool System::newProfile(QString _name){
     // Check if profiles are maxed
     if (totalProfiles >= MAX_PROFILES){
         qDebug().noquote().nospace() << "You already have "<<MAX_PROFILES<<" profiles, that is the max";
-        totalProfiles++;
         return false;
     }
 
@@ -43,8 +44,6 @@ bool System::newProfile(QString _name){
     Profile *newProfile = new Profile(_name);
     profiles.append(newProfile);
     totalProfiles++;
-    qDebug() << "New profile added: " << _name;
-
     saveProfiles();
     return true;
 }
@@ -114,6 +113,7 @@ void System::loadProfiles()
         return;
     }
 
+    //creating new profiles based on json file upon application loading
     QJsonArray profilesArray = doc.array();
     for (const QJsonValue &value : profilesArray) {
         QJsonObject profileJson = value.toObject();

@@ -46,6 +46,7 @@ class Profile
         int totalScans;
         QMap<QString, QVector<int>> organData;
 
+        //used for analysis
         int energy_level;
         int immune_system_level;
         int metabolism_level;
